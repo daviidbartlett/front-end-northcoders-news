@@ -1,32 +1,73 @@
 .App {
   text-align: center;
+  display: grid;
+  grid-template: 1fr 1fr 8fr 1fr / 2fr 1fr;
+  grid-template-areas:
+    "header header"
+    "nav nav"
+    "main sideBar"
+    "footer footer";
+  height: 100vh;
+  background: rgba(219, 224, 229, 1);
+  font-family: "Work Sans", sans-serif;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-}
+.header {
+  grid-area: header;
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: white;
+  margin: 0;
   display: flex;
+}
+.navBar {
+  grid-area: nav;
+  border-top: 1px solid rgb(137, 137, 137);
+  border-bottom: 1px solid rgb(137, 137, 137);
+  background-color: white;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 50 px;
+}
+
+.content {
+  grid-area: main;
+
+  background-color: rgba(219, 224, 229, 1);
+  /* height: 100vh;
+  overflow: scroll; */
+}
+.articleCard {
+  background-color: white;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
+  border-radius: 3px 3px 3px 3px;
+  border: solid 1px rgb(179, 179, 179);
+}
+.articleCard:hover {
+  border: solid 1px rgb(137, 137, 137);
+}
+.footer {
+  grid-area: footer;
+  margin: 0;
+}
+
+.sideBar {
+  grid-area: sideBar;
+  display: flex;
+  background-color: rgba(219, 224, 229, 1);
+  margin: 0;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sideBarForm {
+  background: white;
+  border-radius: 3px 3px 3px 3px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 10px;
 }
