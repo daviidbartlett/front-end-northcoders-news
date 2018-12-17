@@ -50,6 +50,17 @@
 .articleCard:hover {
   border: solid 1px rgb(137, 137, 137);
 }
+.articleInfo {
+  text-align: justify;
+  flex: 15;
+  padding: 2%;
+}
+.titleAuthorLine {
+  display: flex;
+  justify-content: space-around;
+
+  flex-direction: row;
+}
 .footer {
   grid-area: footer;
   margin: 0;
