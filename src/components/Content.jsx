@@ -12,7 +12,11 @@ class Content extends Component {
       <div className="content">
         {this.state.articles.map((article) => (
           <div key={article.article_id}>
-            <ArticleCard article={article} deleteItem={this.deleteItem} />
+            <ArticleCard
+              article={article}
+              deleteItem={this.deleteItem}
+              user={this.props.user}
+            />
           </div>
         ))}
       </div>

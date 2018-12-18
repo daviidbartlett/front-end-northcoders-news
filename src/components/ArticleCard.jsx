@@ -14,6 +14,7 @@ const ArticleCard = ({ article, deleteItem, user }) => {
     topic,
     voted
   } = article;
+
   return (
     <div className="articleCard" key={article_id}>
       {/* <VoteArticle

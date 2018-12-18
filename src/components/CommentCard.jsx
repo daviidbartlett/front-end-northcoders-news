@@ -2,7 +2,6 @@ import React from "react";
 import Delete from "./DeleteButton";
 
 const CommentCard = ({ comment, user, deleteItem }) => {
-  console.log(comment);
   const { body, author, created_at } = comment;
   return (
     <div className="articleCard">

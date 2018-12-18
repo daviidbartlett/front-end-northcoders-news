@@ -29,9 +29,9 @@ class App extends Component {
           handleLogout={this.handleLogout}
         />
         <Router id="content">
-          <Content path="/" />
+          <Content path="/" user={user} />
           <Content path="/:topic" />
-          <Article path="/:topic/:article_id" />
+          <Article path="/:topic/:article_id" user={user} />
           <ErrorPage path="/error" />
         </Router>
 
