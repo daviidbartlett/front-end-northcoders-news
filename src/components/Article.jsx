@@ -44,7 +44,7 @@ class Article extends Component {
                 addVote={this.props.addVote}
                 user={this.props.user}
                 article_id={this.props.article_id}
-                deleteArticle={this.props.deleteArticle}
+                deleteComment={this.deleteComment}
               />
             </div>
           ))}
@@ -85,6 +85,17 @@ class Article extends Component {
         console.log
         //navigate("/error", { state: { errMsg: err.response.data.msg } })
       );
+  };
+  deleteComment = (article_id, comment_id) => {
+    api
+      .deleteData(article_id, comment_id)
+      .catch((err) =>
+        navigate("/error", { state: { errMsg: err.response.data.msg } })
+      );
+    const newComments = this.state.comments.filter((comment) => {
+      return comment_id !== comment.comment_id;
+    });
+    this.setState({ comments: newComments });
   };
 }
 
