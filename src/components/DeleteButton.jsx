@@ -6,8 +6,8 @@ class Delete extends Component {
   }
 
   handleClick = () => {
-    const { article_id, comment_id } = this.props;
-    this.props.deleteItem(article_id, comment_id);
+    const { article_id } = this.props;
+    this.props.deleteArticle(article_id);
   };
 }
 

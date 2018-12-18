@@ -44,7 +44,7 @@ class Article extends Component {
                 addVote={this.props.addVote}
                 user={this.props.user}
                 article_id={this.props.article_id}
-                deleteItem={this.props.deleteItem}
+                deleteArticle={this.props.deleteArticle}
               />
             </div>
           ))}

@@ -3,7 +3,7 @@ import { Link } from "@reach/router";
 import Delete from "./DeleteButton";
 // import VoteArticle from "./VoteArticle";
 
-const ArticleCard = ({ article, deleteItem, user }) => {
+const ArticleCard = ({ article, deleteArticle, user }) => {
   const {
     title,
     article_id,
@@ -32,7 +32,7 @@ const ArticleCard = ({ article, deleteItem, user }) => {
           <p>{author}</p>
 
           {user && user.username === author && (
-            <Delete deleteItem={deleteItem} />
+            <Delete deleteArticle={deleteArticle} article_id={article_id} />
           )}
         </span>
         <h4>
