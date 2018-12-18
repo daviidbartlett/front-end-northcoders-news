@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "@reach/router";
+import Delete from "./DeleteButton";
 // import VoteArticle from "./VoteArticle";
 
-const ArticleCard = ({ article }) => {
+const ArticleCard = ({ article, deleteItem, user }) => {
   const {
     title,
     article_id,
@@ -28,6 +29,10 @@ const ArticleCard = ({ article }) => {
             <Link to={`/${topic}`}>{topic}</Link>
           </p>
           <p>{author}</p>
+
+          {user && user.username === author && (
+            <Delete deleteItem={deleteItem} />
+          )}
         </span>
         <h4>
           <Link to={`/${topic}/${article_id}`}>{title}</Link>

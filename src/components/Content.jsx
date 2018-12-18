@@ -12,7 +12,7 @@ class Content extends Component {
       <div className="content">
         {this.state.articles.map((article) => (
           <div key={article.article_id}>
-            <ArticleCard article={article} />
+            <ArticleCard article={article} deleteItem={this.deleteItem} />
           </div>
         ))}
       </div>
@@ -41,10 +41,28 @@ class Content extends Component {
         }));
       })
       .catch((err) => {
-        if (err.response.status === 404)
-          navigate("/firstArticle", { state: { topic: topic } });
-        else navigate("/error", { state: { errMsg: err.response.data.msg } });
+        // if (err.response.status === 404)
+        //   navigate("/firstArticle", { state: { topic: topic } });
+        // else navigate("/error", { state: { errMsg: err.response.data.msg } });
       });
+  };
+  deleteItem = (article_id, comment_id) => {
+    api
+      .deleteData(article_id, comment_id)
+      .catch((err) =>
+        navigate("/error", { state: { errMsg: err.response.data.msg } })
+      );
+    if (comment_id) {
+      const newComments = this.state.comments.filter((comment) => {
+        return comment_id !== comment.comment_id;
+      });
+      this.setState({ comments: newComments });
+    } else {
+      const newArticles = this.state.articles.filter((article) => {
+        return article_id !== article.article_id;
+      });
+      this.setState({ articles: newArticles });
+    }
   };
 }
 
