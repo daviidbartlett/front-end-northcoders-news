@@ -11,8 +11,7 @@ class VoteArticle extends Component {
           <img
             src={Northcoders_Logo}
             alt="upVote"
-            className={voted === 1 ? "submittedVote" : null}
-            id="voteArrow"
+            className={voted === 1 ? "submittedVote" : "unsubmittedVote"}
           />
         </button>
         <p>{votes}</p>
@@ -20,8 +19,7 @@ class VoteArticle extends Component {
           <img
             src={Northcoders_Logo_reverse}
             alt="downVote"
-            className={voted === -1 ? "submittedVote" : null}
-            id="voteArrow"
+            className={voted === -1 ? "submittedVote" : "unsubmittedVote"}
           />
         </button>
       </span>

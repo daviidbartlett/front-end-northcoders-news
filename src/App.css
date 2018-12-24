@@ -78,10 +78,28 @@ body {
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-#voteArrow {
+.unsubmittedVote {
   width: 25px;
   height: 25px;
   filter: grayscale(100%);
+}
+.unsubmittedVote:hover {
+  filter: none;
+}
+
+.submittedVote {
+  width: 25px;
+  height: 25px;
+  filter: none;
+}
+.voteButton {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  padding: 0;
 }
 .footer {
   grid-area: footer;
