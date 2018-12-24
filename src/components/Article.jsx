@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import * as api from "../api";
-import { Router, navigate } from "@reach/router";
+import { navigate } from "@reach/router";
 import CommentCard from "./CommentCard";
 import CommentSideBar from "./CommentSideBar";
+import VoteArticle from "./VoteArticle";
 
 class Article extends Component {
   state = {
@@ -10,20 +11,21 @@ class Article extends Component {
     comments: []
   };
   render() {
-    const { user, article_id, topic } = this.props;
+    const type = "single";
+    const { user, article_id } = this.props;
     const { body, title, author, votes, voted } = this.state.article;
     return (
       <div className="main">
         <div className="content">
           <div className="articleCard">
-            {/* <VoteArticle
-            votes={votes}
-            voted={voted}
-            type={type}
-            article_id={article_id}
-            addVote={this.props.addVote}
-            user={this.props.user}
-          /> */}
+            <VoteArticle
+              votes={votes}
+              voted={voted}
+              type={type}
+              article_id={article_id}
+              addVote={this.addVote}
+              user={this.props.user}
+            />
             <span id="articleInfo">
               <span id="titleAuthorLine">
                 <h3>{title}</h3>
@@ -44,10 +46,12 @@ class Article extends Component {
               <div key={comment.comment_id}>
                 <CommentCard
                   comment={comment}
-                  addVote={this.props.addVote}
+                  addVote={this.addVote}
                   user={user}
                   article_id={article_id}
                   deleteComment={this.deleteComment}
+                  votes={votes}
+                  voted={voted}
                 />
               </div>
             ))}
@@ -110,6 +114,45 @@ class Article extends Component {
   };
   updateStateWithNewComment = (article_id) => {
     this.fetchCommentsForArticle(article_id);
+  };
+  addVote = (article_id, vote, type, comment_id) => {
+    console.log(article_id, vote, type, comment_id);
+    const increment = vote === "upVote" ? 1 : -1;
+    if (comment_id) {
+      console.log("comment");
+      api
+        .updateCommentVote(article_id, increment, comment_id)
+        .then((article) => {
+          this.setState(
+            ({ comments }) => ({
+              comments: comments.map((mapCom) => {
+                if (mapCom.comment_id === article.comment_id) {
+                  console.log(mapCom);
+                  mapCom.votes += increment;
+                  mapCom.voted = increment;
+                  console.log(mapCom);
+                }
+                return mapCom;
+              })
+            }),
+            console.log(this.state)
+          );
+        })
+        .catch((err) =>
+          navigate("/error", { state: { errMsg: err.response.data.msg } })
+        );
+    } else console.log("article");
+    api
+      .updateArticleVote(article_id, increment)
+      .then((article) => {
+        const newVoteArticle = this.state.article;
+        newVoteArticle.votes = article.votes + increment;
+        newVoteArticle.voted = increment;
+        this.setState({ article: newVoteArticle });
+      })
+      .catch((err) =>
+        navigate("/error", { state: { errMsg: err.response.data.msg } })
+      );
   };
 }
 

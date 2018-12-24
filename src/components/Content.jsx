@@ -85,7 +85,6 @@ class Content extends Component {
   };
   addVote = (article_id, vote, type) => {
     const increment = vote === "upVote" ? 1 : -1;
-    console.log(increment);
     api
       .updateArticleVote(article_id, increment)
       .then((article) => {
