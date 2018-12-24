@@ -1,13 +1,16 @@
+body {
+  margin: 0px;
+}
 .App {
   text-align: center;
   display: grid;
-  grid-template: 1fr 1fr 8fr 1fr / 2fr 1fr;
+  grid-template: 1fr 1fr 8fr 1fr;
   grid-template-areas:
-    "header header"
-    "nav nav"
-    "main sideBar"
-    "footer footer";
-  height: 100vh;
+    "header"
+    "nav"
+    "main"
+    "footer";
+
   background: rgba(219, 224, 229, 1);
   font-family: "Work Sans", sans-serif;
 }
@@ -30,13 +33,15 @@
   justify-content: space-around;
   height: 50 px;
 }
+.main {
+  grid-area: main;
+  display: flex;
+}
 
 .content {
-  grid-area: main;
-
-  background-color: rgba(219, 224, 229, 1);
-  /* height: 100vh;
-  overflow: scroll; */
+  height: 100vh;
+  overflow: scroll;
+  flex: 4;
 }
 .articleCard {
   background-color: white;
@@ -67,11 +72,14 @@
 }
 
 .sideBar {
-  grid-area: sideBar;
   display: flex;
-  background-color: rgba(219, 224, 229, 1);
   margin: 0;
   flex-direction: column;
+  flex: 2;
+}
+.avatar {
+  width: 30px;
+  height: auto;
 }
 
 .sideBarForm {

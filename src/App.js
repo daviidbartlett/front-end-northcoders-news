@@ -4,9 +4,7 @@ import Header from "./components/Header";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Content from "./components/Content";
-import TopicSideBar from "./components/TopicSideBar";
-import ArticleSideBar from "./components/ArticleSideBar";
-import CommentSideBar from "./components/CommentSideBar";
+
 import ErrorPage from "./components/ErrorPage";
 import { Router, navigate } from "@reach/router";
 import * as api from "./api";
@@ -29,16 +27,10 @@ class App extends Component {
           handleLogout={this.handleLogout}
         />
         <Router id="content">
-          <Content path="/" user={user} />
-          <Content path="/:topic" />
+          <Content path="/" user={user} addTopic={this.addTopic} />
+          <Content path="/:topic" user={user} />
           <Article path="/:topic/:article_id" user={user} />
           <ErrorPage path="/error" />
-        </Router>
-
-        <Router id="sideBar">
-          <TopicSideBar path="/" />
-          <ArticleSideBar path="/:topic" />
-          <CommentSideBar path="/:topic/:article_id" />
         </Router>
 
         <Footer />
@@ -60,12 +52,20 @@ class App extends Component {
       );
   };
   setUser = (userObj) => {
-    this.setState({ user: userObj }).catch((err) =>
-      navigate("/error", { state: { errMsg: err.response.data.msg } })
-    );
+    this.setState({ user: userObj });
   };
   handleLogout = () => {
     this.setState({ user: null });
+  };
+  addTopic = (slug, description) => {
+    api
+      .postTopic(slug, description)
+
+      .then((topic) => {
+        this.setState((prevState) => ({
+          topics: [...prevState.topics, topic]
+        }));
+      });
   };
 }
 

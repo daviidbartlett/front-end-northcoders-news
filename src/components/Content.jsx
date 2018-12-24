@@ -2,23 +2,41 @@ import React, { Component } from "react";
 import { Router, navigate } from "@reach/router";
 import * as api from "../api";
 import ArticleCard from "./ArticleCard";
+import ArticleSideBar from "./ArticleSideBar";
+import TopicSideBar from "./TopicSideBar";
 
 class Content extends Component {
   state = {
-    articles: []
+    articles: [],
+    loading: true
   };
   render() {
+    const { user, addTopic } = this.props;
     return (
-      <div className="content">
-        {this.state.articles.map((article) => (
-          <div key={article.article_id}>
-            <ArticleCard
-              article={article}
-              deleteArticle={this.deleteArticle}
-              user={this.props.user}
+      <div className="main">
+        <div className="content">
+          {this.state.articles.map((article) => (
+            <div key={article.article_id}>
+              <ArticleCard
+                article={article}
+                deleteArticle={this.deleteArticle}
+                user={user}
+              />
+            </div>
+          ))}
+        </div>
+        <div className="sideBar">
+          {this.props.topic ? (
+            <ArticleSideBar
+              path="/:topic"
+              user={user}
+              topic={this.props.topic}
+              updateStateWithNewArticle={this.updateStateWithNewArticle}
             />
-          </div>
-        ))}
+          ) : (
+            <TopicSideBar path="/" user={user} addTopic={addTopic} />
+          )}
+        </div>
       </div>
     );
   }
@@ -60,6 +78,9 @@ class Content extends Component {
       return article_id !== article.article_id;
     });
     this.setState({ articles: newArticles });
+  };
+  updateStateWithNewArticle = (topic) => {
+    this.fetchArticles(topic);
   };
 }
 

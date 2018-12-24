@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import * as api from "../api";
 import { Router, navigate } from "@reach/router";
 import CommentCard from "./CommentCard";
+import CommentSideBar from "./CommentSideBar";
 
 class Article extends Component {
   state = {
@@ -9,11 +10,13 @@ class Article extends Component {
     comments: []
   };
   render() {
+    const { user, article_id, topic } = this.props;
     const { body, title, author, votes, voted } = this.state.article;
     return (
-      <>
-        <div className="articleCard">
-          {/* <VoteArticle
+      <div className="main">
+        <div className="content">
+          <div className="articleCard">
+            {/* <VoteArticle
             votes={votes}
             voted={voted}
             type={type}
@@ -21,34 +24,43 @@ class Article extends Component {
             addVote={this.props.addVote}
             user={this.props.user}
           /> */}
-          <span id="articleInfo">
-            <span id="titleAuthorLine">
-              <h3>{title}</h3>
-              <h4>{author}</h4>
-            </span>
+            <span id="articleInfo">
+              <span id="titleAuthorLine">
+                <h3>{title}</h3>
+                <h4>{author}</h4>
+              </span>
 
-            <p>{body}</p>
-          </span>
-        </div>
-        {/* <QueryBar
+              <p>{body}</p>
+            </span>
+          </div>
+          {/* <QueryBar
           fetchCommentsForArticle={this.props.fetchCommentsForArticle}
           fetchArticles={this.props.fetchArticles}
           article_id={article_id}
         /> */}
 
-        {this.state.comments.length !== 0 &&
-          this.state.comments.map((comment) => (
-            <div key={comment.comment_id}>
-              <CommentCard
-                comment={comment}
-                addVote={this.props.addVote}
-                user={this.props.user}
-                article_id={this.props.article_id}
-                deleteComment={this.deleteComment}
-              />
-            </div>
-          ))}
-      </>
+          {this.state.comments.length !== 0 &&
+            this.state.comments.map((comment) => (
+              <div key={comment.comment_id}>
+                <CommentCard
+                  comment={comment}
+                  addVote={this.props.addVote}
+                  user={user}
+                  article_id={article_id}
+                  deleteComment={this.deleteComment}
+                />
+              </div>
+            ))}
+        </div>
+        <div className="sideBar">
+          <CommentSideBar
+            className="sideBar"
+            user={user}
+            article_id={article_id}
+            updateStateWithNewComment={this.updateStateWithNewComment}
+          />
+        </div>
+      </div>
     );
   }
   componentDidMount = () => {
@@ -57,7 +69,6 @@ class Article extends Component {
     this.fetchCommentsForArticle(article_id);
   };
   fetchArticle = (article_id) => {
-    console.log(article_id);
     api
       .getArticle(article_id)
       .then((article) => {
@@ -96,6 +107,9 @@ class Article extends Component {
       return comment_id !== comment.comment_id;
     });
     this.setState({ comments: newComments });
+  };
+  updateStateWithNewComment = (article_id) => {
+    this.fetchCommentsForArticle(article_id);
   };
 }
 
