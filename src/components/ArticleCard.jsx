@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "@reach/router";
 import Delete from "./DeleteButton";
-// import VoteArticle from "./VoteArticle";
+import VoteArticle from "./VoteArticle";
 
-const ArticleCard = ({ article, deleteArticle, user }) => {
+const ArticleCard = ({ article, deleteArticle, user, addVote }) => {
+  const type = "map";
   const {
     title,
     article_id,
@@ -17,13 +18,15 @@ const ArticleCard = ({ article, deleteArticle, user }) => {
 
   return (
     <div className="articleCard" key={article_id}>
-      {/* <VoteArticle
+      <VoteArticle
         votes={votes}
         voted={voted}
         article_id={article_id}
-        addVote={this.props.addVote}
-        user={this.props.user}
-      /> */}
+        user={user}
+        addVote={addVote}
+        type={type}
+      />
+
       <span className="articleInfo">
         <span className="titleAuthorLine">
           <p>

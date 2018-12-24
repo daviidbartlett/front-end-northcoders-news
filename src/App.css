@@ -66,6 +66,23 @@ body {
 
   flex-direction: row;
 }
+
+.votingArea {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0;
+  background: rgb(248, 249, 250);
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+#voteArrow {
+  width: 25px;
+  height: 25px;
+  filter: grayscale(100%);
+}
 .footer {
   grid-area: footer;
   margin: 0;

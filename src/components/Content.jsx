@@ -21,6 +21,7 @@ class Content extends Component {
                 article={article}
                 deleteArticle={this.deleteArticle}
                 user={user}
+                addVote={this.addVote}
               />
             </div>
           ))}
@@ -81,6 +82,36 @@ class Content extends Component {
   };
   updateStateWithNewArticle = (topic) => {
     this.fetchArticles(topic);
+  };
+  addVote = (article_id, vote, type) => {
+    const increment = vote === "upVote" ? 1 : -1;
+    console.log(increment);
+    api
+      .updateArticleVote(article_id, increment)
+      .then((article) => {
+        if (type === "map") {
+          this.setState(({ articles }) => ({
+            articles: articles.map((mapArt) => {
+              if (mapArt.article_id === article.article_id) {
+                mapArt.votes += increment;
+                mapArt.voted = increment;
+              }
+
+              return mapArt;
+            })
+          }));
+        } else
+          this.setState(({ article }) => ({
+            article: {
+              ...article,
+              votes: article.votes + increment,
+              voted: increment
+            }
+          }));
+      })
+      .catch((err) =>
+        navigate("/error", { state: { errMsg: err.response.data.msg } })
+      );
   };
 }
 
