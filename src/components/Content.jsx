@@ -1,17 +1,29 @@
 import React, { Component } from "react";
-import { Router, navigate } from "@reach/router";
+import { navigate } from "@reach/router";
 import * as api from "../api";
 import ArticleCard from "./ArticleCard";
 import ArticleSideBar from "./ArticleSideBar";
 import TopicSideBar from "./TopicSideBar";
+import FirstArticle from "./FirstArticle";
 
 class Content extends Component {
   state = {
     articles: [],
-    loading: true
+    loading: true,
+    newArticle: false
   };
   render() {
     const { user, addTopic } = this.props;
+    if (this.state.newArticle || this.state.articles.length === 0)
+      return (
+        <FirstArticle
+          path="/:topic/firstarticle"
+          user={user}
+          topic={this.props.topic}
+          updateStateWithNewArticle={this.updateStateWithNewArticle}
+        />
+      );
+
     return (
       <div className="main">
         <div className="content">
@@ -52,21 +64,22 @@ class Content extends Component {
   fetchArticles = (topic, query) => {
     api
       .getArticles(topic, query)
-      .then((articles) => {
-        this.setState((prevState) => ({
-          articles: [
-            ...articles,
-            articles.map((article) => {
+      .then((fetchedArticles) => {
+        this.setState(
+          {
+            articles: fetchedArticles.map((article) => {
               article.voted = 0;
               return article;
-            })
-          ]
-        }));
+            }),
+            newArticle: false
+          },
+          () => console.log(this.state)
+        );
       })
       .catch((err) => {
-        // if (err.response.status === 404)
-        //   navigate("/firstArticle", { state: { topic: topic } });
-        // else navigate("/error", { state: { errMsg: err.response.data.msg } });
+        if (err.response.status === 404) this.setState({ newArticle: true });
+        else
+          navigate("/ErrorPage", { state: { errMsg: err.response.data.msg } });
       });
   };
   deleteArticle = (article_id) => {
@@ -81,6 +94,7 @@ class Content extends Component {
     this.setState({ articles: newArticles });
   };
   updateStateWithNewArticle = (topic) => {
+    console.log(topic);
     this.fetchArticles(topic);
   };
   addVote = (article_id, vote, type) => {

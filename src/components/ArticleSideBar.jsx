@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PleaseLogin from "./PleaseLogin";
 import * as api from "../api";
+import { navigate } from "@reach/router/lib/history";
 
 class ArticleSideBar extends Component {
   state = {
@@ -10,19 +11,26 @@ class ArticleSideBar extends Component {
   render() {
     const { user } = this.props;
     if (!user) return <PleaseLogin />;
+    const {
+      firstArticle,
+      topic,
+      user: { avatar_url, username }
+    } = this.props;
+
     return (
       <>
         <div className="sideBarForm">
-          <h2>Welcome back {user.username}</h2>
-          <img
-            className="avatar"
-            src={this.props.user.avatar_url}
-            alt={this.props.user.username}
-          />
+          <h2>Welcome back {username}</h2>
+          <img className="avatar" src={avatar_url} alt={username} />
         </div>
 
         <div className="sideBarForm">
-          <h4>Have something to say? Why not add a new article?</h4>
+          {firstArticle ? (
+            <h4>Post your first article in {topic}</h4>
+          ) : (
+            <h4>Have something to say? Why not add a new article?</h4>
+          )}
+
           <form onSubmit={this.handleSubmit}>
             <label htmlFor="title">title: </label>
             <input
@@ -54,10 +62,7 @@ class ArticleSideBar extends Component {
   };
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.props);
-    if (this.props.user) {
-      this.addNewArticle(this.state.title, this.state.body);
-    } else alert("You need to login to use this feature!");
+    this.addNewArticle(this.state.title, this.state.body);
   };
   addNewArticle = () => {
     api
@@ -67,12 +72,13 @@ class ArticleSideBar extends Component {
         this.state.body,
         this.props.user.user_id
       )
-      .then(() => {
+      .then((article) => {
         this.props.updateStateWithNewArticle(this.props.topic);
         this.setState({
           title: "",
           body: ""
         });
+        return article;
       });
   };
 }

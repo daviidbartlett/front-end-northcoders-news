@@ -9,6 +9,7 @@ import ErrorPage from "./components/ErrorPage";
 import { Router, navigate } from "@reach/router";
 import * as api from "./api";
 import Article from "./components/Article";
+import FirstArticle from "./components/FirstArticle";
 
 class App extends Component {
   state = {
@@ -30,6 +31,7 @@ class App extends Component {
           <Content path="/" user={user} addTopic={this.addTopic} />
           <Content path="/:topic" user={user} />
           <Article path="/:topic/:article_id" user={user} />
+
           <ErrorPage path="/error" />
         </Router>
 

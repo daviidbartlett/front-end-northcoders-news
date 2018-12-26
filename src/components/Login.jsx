@@ -3,19 +3,23 @@ import * as api from "../api";
 
 class Login extends Component {
   state = {
-    username: ""
+    username: "",
+    incorrectUsername: false
   };
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor="username">Login:</label>
-        <input
-          id="username"
-          placeholder="username"
-          value={this.state.username}
-          onChange={this.handleChange}
-        />
-      </form>
+      <>
+        <form onSubmit={this.handleSubmit}>
+          <label htmlFor="username">Login:</label>
+          <input
+            id="username"
+            placeholder="username"
+            value={this.state.username}
+            onChange={this.handleChange}
+          />
+        </form>
+        {this.state.incorrectUsername && <label>Incorrect Username!</label>}
+      </>
     );
   }
   handleChange = (event) => {
@@ -28,9 +32,11 @@ class Login extends Component {
       .checkUsername(this.state.username)
       .then((user) => {
         this.props.setUser(user);
+        this.setState({ incorrectUsername: false });
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status === 404)
+          this.setState({ incorrectUsername: true });
       });
   };
 }
