@@ -14,6 +14,7 @@ class Article extends Component {
     const type = "single";
     const { user, article_id } = this.props;
     const { body, title, author, votes, voted } = this.state.article;
+
     return (
       <div className="main">
         <div className="content">
@@ -50,8 +51,6 @@ class Article extends Component {
                   user={user}
                   article_id={article_id}
                   deleteComment={this.deleteComment}
-                  votes={votes}
-                  voted={voted}
                 />
               </div>
             ))}
@@ -122,37 +121,29 @@ class Article extends Component {
       console.log("comment");
       api
         .updateCommentVote(article_id, increment, comment_id)
-        .then((article) => {
-          this.setState(
-            ({ comments }) => ({
-              comments: comments.map((mapCom) => {
-                if (mapCom.comment_id === article.comment_id) {
-                  console.log(mapCom);
-                  mapCom.votes += increment;
-                  mapCom.voted = increment;
-                  console.log(mapCom);
-                }
-                return mapCom;
-              })
-            }),
-            console.log(this.state)
-          );
-        })
         .catch((err) =>
           navigate("/error", { state: { errMsg: err.response.data.msg } })
         );
-    } else console.log("article");
-    api
-      .updateArticleVote(article_id, increment)
-      .then((article) => {
-        const newVoteArticle = this.state.article;
-        newVoteArticle.votes = article.votes + increment;
-        newVoteArticle.voted = increment;
-        this.setState({ article: newVoteArticle });
-      })
-      .catch((err) =>
-        navigate("/error", { state: { errMsg: err.response.data.msg } })
-      );
+
+      this.setState(({ comments }) => ({
+        comments: comments.map((mapCom) => {
+          if (mapCom.comment_id === comment_id) {
+            mapCom.votes += increment;
+            mapCom.voted = increment;
+          }
+          return mapCom;
+        })
+      }));
+    } else {
+      console.log("article");
+      api
+        .updateArticleVote(article_id, increment)
+        .catch((err) => console.log(err));
+      let newVoteArticle = this.state.article;
+      newVoteArticle.votes += increment;
+      newVoteArticle.voted = increment;
+      this.setState({ article: newVoteArticle });
+    }
   };
 }
 

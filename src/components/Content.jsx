@@ -16,7 +16,7 @@ class Content extends Component {
       <div className="main">
         <div className="content">
           {this.state.articles.map((article) => (
-            <div key={article.article_id}>
+            <div key={article.title}>
               <ArticleCard
                 article={article}
                 deleteArticle={this.deleteArticle}
