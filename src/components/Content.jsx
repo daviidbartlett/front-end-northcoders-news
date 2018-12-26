@@ -5,21 +5,21 @@ import ArticleCard from "./ArticleCard";
 import ArticleSideBar from "./ArticleSideBar";
 import TopicSideBar from "./TopicSideBar";
 import FirstArticle from "./FirstArticle";
+import QueryBar from "./QueryBar";
 
 class Content extends Component {
   state = {
     articles: [],
-    loading: true,
     newArticle: false
   };
   render() {
-    const { user, addTopic } = this.props;
+    const { user, addTopic, topic } = this.props;
     if (this.state.newArticle || this.state.articles.length === 0)
       return (
         <FirstArticle
           path="/:topic/firstarticle"
           user={user}
-          topic={this.props.topic}
+          topic={topic}
           updateStateWithNewArticle={this.updateStateWithNewArticle}
         />
       );
@@ -27,8 +27,9 @@ class Content extends Component {
     return (
       <div className="main">
         <div className="content">
+          <QueryBar fetchArticles={this.fetchArticles} topic={topic} />
           {this.state.articles.map((article) => (
-            <div key={article.title}>
+            <div key={article.article_id}>
               <ArticleCard
                 article={article}
                 deleteArticle={this.deleteArticle}
@@ -65,16 +66,13 @@ class Content extends Component {
     api
       .getArticles(topic, query)
       .then((fetchedArticles) => {
-        this.setState(
-          {
-            articles: fetchedArticles.map((article) => {
-              article.voted = 0;
-              return article;
-            }),
-            newArticle: false
-          },
-          () => console.log(this.state)
-        );
+        this.setState({
+          articles: fetchedArticles.map((article) => {
+            article.voted = 0;
+            return article;
+          }),
+          newArticle: false
+        });
       })
       .catch((err) => {
         if (err.response.status === 404) this.setState({ newArticle: true });

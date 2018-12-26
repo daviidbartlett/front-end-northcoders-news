@@ -6,7 +6,7 @@ export const getArticles = async (topic, query) => {
   const URL = topic
     ? `${BASE_URL}topics/${topic}/articles`
     : `${BASE_URL}articles`;
-  const urlQuery = `?${query}` || "";
+  const urlQuery = query ? query : "";
   console.log(URL + urlQuery);
   const { data } = await axios.get(URL + urlQuery);
 

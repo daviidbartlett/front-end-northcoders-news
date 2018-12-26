@@ -9,7 +9,6 @@ import ErrorPage from "./components/ErrorPage";
 import { Router, navigate } from "@reach/router";
 import * as api from "./api";
 import Article from "./components/Article";
-import FirstArticle from "./components/FirstArticle";
 
 class App extends Component {
   state = {
