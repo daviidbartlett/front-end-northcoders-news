@@ -87,30 +87,28 @@ class Content extends Component {
     const increment = vote === "upVote" ? 1 : -1;
     api
       .updateArticleVote(article_id, increment)
-      .then((article) => {
-        if (type === "map") {
-          this.setState(({ articles }) => ({
-            articles: articles.map((mapArt) => {
-              if (mapArt.article_id === article.article_id) {
-                mapArt.votes += increment;
-                mapArt.voted = increment;
-              }
-
-              return mapArt;
-            })
-          }));
-        } else
-          this.setState(({ article }) => ({
-            article: {
-              ...article,
-              votes: article.votes + increment,
-              voted: increment
-            }
-          }));
-      })
       .catch((err) =>
         navigate("/error", { state: { errMsg: err.response.data.msg } })
       );
+    if (type === "map") {
+      this.setState(({ articles }) => ({
+        articles: articles.map((mapArt) => {
+          if (mapArt.article_id === article_id) {
+            mapArt.votes += increment;
+            mapArt.voted = increment;
+          }
+
+          return mapArt;
+        })
+      }));
+    } else
+      this.setState(({ article }) => ({
+        article: {
+          ...article,
+          votes: article.votes + increment,
+          voted: increment
+        }
+      }));
   };
 }
 

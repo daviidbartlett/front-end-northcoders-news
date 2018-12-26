@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import * as api from "../api";
-import { navigate } from "@reach/router";
+import { navigate, Link } from "@reach/router";
 import CommentCard from "./CommentCard";
 import CommentSideBar from "./CommentSideBar";
 import VoteArticle from "./VoteArticle";
+import moment from "moment";
 
 class Article extends Component {
   state = {
@@ -13,7 +14,15 @@ class Article extends Component {
   render() {
     const type = "single";
     const { user, article_id } = this.props;
-    const { body, title, author, votes, voted } = this.state.article;
+    const {
+      body,
+      title,
+      author,
+      votes,
+      voted,
+      topic,
+      created_at
+    } = this.state.article;
 
     return (
       <div className="main">
@@ -29,11 +38,14 @@ class Article extends Component {
             />
             <span id="articleInfo">
               <span id="titleAuthorLine">
-                <h3>{title}</h3>
-                <h4>{author}</h4>
+                <p>
+                  <Link to={`/${topic}`}>{topic}</Link> . Posted by {author}{" "}
+                  {moment(created_at, "YYYYMMDD").fromNow()}
+                </p>
+                <h4 className="articleBody">{title}</h4>
               </span>
 
-              <p>{body}</p>
+              <p className="articleBody">{body}</p>
             </span>
           </div>
           {/* <QueryBar
@@ -124,7 +136,6 @@ class Article extends Component {
         .catch((err) =>
           navigate("/error", { state: { errMsg: err.response.data.msg } })
         );
-
       this.setState(({ comments }) => ({
         comments: comments.map((mapCom) => {
           if (mapCom.comment_id === comment_id) {

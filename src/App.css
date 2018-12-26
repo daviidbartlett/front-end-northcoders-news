@@ -51,6 +51,7 @@ body {
   display: flex;
   border-radius: 3px 3px 3px 3px;
   border: solid 1px rgb(179, 179, 179);
+  text-align: justify;
 }
 .articleCard:hover {
   border: solid 1px rgb(137, 137, 137);
@@ -58,13 +59,12 @@ body {
 .articleInfo {
   text-align: justify;
   flex: 15;
+}
+.articleBody {
   padding: 2%;
 }
 .titleAuthorLine {
-  display: flex;
-  justify-content: space-around;
-
-  flex-direction: row;
+  justify-content: left;
 }
 
 .votingArea {

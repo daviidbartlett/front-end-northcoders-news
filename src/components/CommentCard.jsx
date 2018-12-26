@@ -1,6 +1,7 @@
 import React from "react";
 import Delete from "./DeleteButton";
 import VoteArticle from "./VoteArticle";
+import moment from "moment";
 
 const CommentCard = ({ comment, user, deleteComment, article_id, addVote }) => {
   const { body, author, created_at, comment_id, votes, voted } = comment;
@@ -15,9 +16,15 @@ const CommentCard = ({ comment, user, deleteComment, article_id, addVote }) => {
         comment_id={comment_id}
         user={user}
       />
-      <p>{body}</p>
-      <p>{author}</p>
-      <p>{created_at}</p>
+      <div className="articleInfo">
+        <div className="titleAuthorLine">
+          <p>
+            Posted by {author} {moment(created_at, "YYYYMMDD").fromNow()}
+          </p>
+        </div>
+
+        <p className="articleBody">{body}</p>
+      </div>
       {user && user.username === author && (
         <Delete
           deleteComment={deleteComment}

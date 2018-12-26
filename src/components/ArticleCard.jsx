@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "@reach/router";
 import Delete from "./DeleteButton";
 import VoteArticle from "./VoteArticle";
+import moment from "moment";
 
 const ArticleCard = ({ article, deleteArticle, user, addVote }) => {
   const type = "map";
@@ -30,9 +31,9 @@ const ArticleCard = ({ article, deleteArticle, user, addVote }) => {
       <span className="articleInfo">
         <span className="titleAuthorLine">
           <p>
-            <Link to={`/${topic}`}>{topic}</Link>
+            <Link to={`/${topic}`}>{topic}</Link> . Posted by {author}{" "}
+            {moment(created_at, "YYYYMMDD").fromNow()}
           </p>
-          <p>{author}</p>
 
           {user && user.username === author && (
             <Delete deleteArticle={deleteArticle} article_id={article_id} />
@@ -41,8 +42,7 @@ const ArticleCard = ({ article, deleteArticle, user, addVote }) => {
         <h4>
           <Link to={`/${topic}/${article_id}`}>{title}</Link>
         </h4>
-        <p>{comment_count}</p>
-        <p>{created_at}</p>
+        <p>{comment_count} comments</p>
       </span>
     </div>
   );
