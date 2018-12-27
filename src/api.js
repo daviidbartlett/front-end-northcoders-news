@@ -2,14 +2,13 @@ import axios from "axios";
 
 const BASE_URL = "https://david-nc-knews.herokuapp.com/api/";
 
-export const getArticles = async (topic, query) => {
+export const getArticles = async (topic, query, p) => {
   const URL = topic
     ? `${BASE_URL}topics/${topic}/articles`
     : `${BASE_URL}articles`;
-  const urlQuery = query ? query : "";
-  console.log(URL + urlQuery);
+  const urlQuery = query ? `${query}&p=${p}` : `?p=${p}`;
   const { data } = await axios.get(URL + urlQuery);
-
+  console.log(URL + urlQuery);
   return data.articles;
 };
 export const getTopics = async () => {

@@ -6,11 +6,15 @@ import ArticleSideBar from "./ArticleSideBar";
 import TopicSideBar from "./TopicSideBar";
 import FirstArticle from "./FirstArticle";
 import QueryBar from "./QueryBar";
+import LoadMore from "./LoadMore";
 
 class Content extends Component {
   state = {
     articles: [],
-    newArticle: false
+    newArticle: false,
+    query: "",
+    p: 1,
+    isAtEndOfArticles: false
   };
   render() {
     const { user, addTopic, topic } = this.props;
@@ -38,6 +42,9 @@ class Content extends Component {
               />
             </div>
           ))}
+          {!this.state.isAtEndOfArticles && (
+            <LoadMore updateStateWithP={this.updateStateWithP} />
+          )}
         </div>
         <div className="sideBar">
           {this.props.topic ? (
@@ -63,8 +70,9 @@ class Content extends Component {
   };
 
   fetchArticles = (topic, query) => {
+    this.setState({ query: query });
     api
-      .getArticles(topic, query)
+      .getArticles(topic, query, this.state.p)
       .then((fetchedArticles) => {
         this.setState({
           articles: fetchedArticles.map((article) => {
@@ -92,7 +100,6 @@ class Content extends Component {
     this.setState({ articles: newArticles });
   };
   updateStateWithNewArticle = (topic) => {
-    console.log(topic);
     this.fetchArticles(topic);
   };
   addVote = (article_id, vote, type) => {
@@ -121,6 +128,33 @@ class Content extends Component {
           voted: increment
         }
       }));
+  };
+  updateStateWithP = () => {
+    this.setState((prevState) => {
+      prevState.p++;
+    }, this.loadMoreArticles);
+  };
+  loadMoreArticles = (topic, query) => {
+    api
+      .getArticles(topic, query, this.state.p)
+      .then((fetchedArticles) => {
+        this.setState((prevState) => ({
+          articles: [
+            ...prevState.articles,
+            ...fetchedArticles.map((article) => {
+              article.voted = 0;
+              return article;
+            })
+          ],
+          newArticle: false,
+          isAtEndOfArticles: fetchedArticles.length >= 10 ? false : true
+        }));
+      })
+      .catch((err) => {
+        if (err.response.status === 404) this.setState({ newArticle: true });
+        else
+          navigate("/ErrorPage", { state: { errMsg: err.response.data.msg } });
+      });
   };
 }
 
