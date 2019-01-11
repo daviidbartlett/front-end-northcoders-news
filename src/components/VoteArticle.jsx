@@ -37,6 +37,34 @@ class VoteArticle extends Component {
           this.props.comment_id
         );
       }
+      if (this.props.voted === 1 && alt === "downVote") {
+        this.props.addVote(
+          this.props.article_id,
+          alt,
+          this.props.type,
+          this.props.comment_id
+        );
+        this.props.addVote(
+          this.props.article_id,
+          alt,
+          this.props.type,
+          this.props.comment_id
+        );
+      }
+      if (this.props.voted === -1 && alt === "upVote") {
+        this.props.addVote(
+          this.props.article_id,
+          alt,
+          this.props.type,
+          this.props.comment_id
+        );
+        this.props.addVote(
+          this.props.article_id,
+          alt,
+          this.props.type,
+          this.props.comment_id
+        );
+      }
     } else {
       alert("You need to login to use this feature!");
     }

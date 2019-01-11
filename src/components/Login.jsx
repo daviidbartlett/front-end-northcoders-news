@@ -18,7 +18,16 @@ class Login extends Component {
             onChange={this.handleChange}
           />
         </form>
-        {this.state.incorrectUsername && <label>Incorrect Username!</label>}
+
+        <p
+          className={
+            this.state.incorrectUsername
+              ? "trueIncorrectUsername"
+              : "falseIncorrectUsername"
+          }
+        >
+          Incorrect Username!
+        </p>
       </>
     );
   }

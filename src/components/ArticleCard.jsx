@@ -31,8 +31,10 @@ const ArticleCard = ({ article, deleteArticle, user, addVote }) => {
       <span className="articleInfo">
         <span className="titleAuthorLine">
           <p>
-            <Link to={`/${topic}`}>{topic}</Link> . Posted by {author}{" "}
-            {moment(created_at, "YYYYMMDD").fromNow()}
+            <Link className="topicLink" to={`/${topic}`}>
+              {topic}
+            </Link>{" "}
+            . Posted by {author} {moment(created_at, "YYYYMMDD").fromNow()}
           </p>
 
           {user && user.username === author && (

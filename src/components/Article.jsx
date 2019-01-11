@@ -36,16 +36,16 @@ class Article extends Component {
               addVote={this.addVote}
               user={this.props.user}
             />
-            <span id="articleInfo">
-              <span id="titleAuthorLine">
+            <span className="articleInfo">
+              <div className="titleAuthorLine">
                 <p>
                   <Link to={`/${topic}`}>{topic}</Link> . Posted by {author}{" "}
                   {moment(created_at, "YYYYMMDD").fromNow()}
                 </p>
-                <h4 className="articleBody">{title}</h4>
-              </span>
-
-              <p className="articleBody">{body}</p>
+              </div>
+              <div className="articleBody">
+                <h4>{title}</h4> <p>{body}</p>
+              </div>
             </span>
           </div>
           {/* <QueryBar
@@ -127,10 +127,8 @@ class Article extends Component {
     this.fetchCommentsForArticle(article_id);
   };
   addVote = (article_id, vote, type, comment_id) => {
-    console.log(article_id, vote, type, comment_id);
     const increment = vote === "upVote" ? 1 : -1;
     if (comment_id) {
-      console.log("comment");
       api
         .updateCommentVote(article_id, increment, comment_id)
         .catch((err) =>

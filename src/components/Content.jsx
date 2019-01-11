@@ -5,19 +5,21 @@ import ArticleCard from "./ArticleCard";
 import ArticleSideBar from "./ArticleSideBar";
 import TopicSideBar from "./TopicSideBar";
 import FirstArticle from "./FirstArticle";
-import QueryBar from "./QueryBar";
 import LoadMore from "./LoadMore";
+import * as util from "../utils";
 
 class Content extends Component {
   state = {
     articles: [],
     newArticle: false,
     query: "",
+    limit: "",
     p: 1,
     isAtEndOfArticles: false
   };
   render() {
     const { user, addTopic, topic } = this.props;
+    const { query, limit } = this.state;
     if (this.state.newArticle || this.state.articles.length === 0)
       return (
         <FirstArticle
@@ -31,7 +33,14 @@ class Content extends Component {
     return (
       <div className="main">
         <div className="content">
-          <QueryBar fetchArticles={this.fetchArticles} topic={topic} />
+          <form className="queryBar" onSubmit={this.handleSubmit}>
+            <select value={query} id="query" onChange={this.handleChange}>
+              <option value="">date new to old</option>
+              <option value="sort_ascending=true">date old to new</option>
+              <option value="sort_by=votes">most popular</option>
+            </select>
+            <button>sort</button>
+          </form>
           {this.state.articles.map((article) => (
             <div key={article.article_id}>
               <ArticleCard
@@ -42,11 +51,13 @@ class Content extends Component {
               />
             </div>
           ))}
-          {!this.state.isAtEndOfArticles && (
-            <LoadMore updateStateWithP={this.updateStateWithP} />
+          {(!this.state.isAtEndOfArticles ||
+            this.state.articles.length % 10 === 0) && (
+            <LoadMore updateStateWithP={this.updateStateWithP} topic={topic} />
           )}
         </div>
         <div className="sideBar">
+          <div className="queryBar" />
           {this.props.topic ? (
             <ArticleSideBar
               path="/:topic"
@@ -72,20 +83,22 @@ class Content extends Component {
   fetchArticles = (topic, query) => {
     this.setState({ query: query });
     api
-      .getArticles(topic, query, this.state.p)
+      .getArticles(topic, query)
       .then((fetchedArticles) => {
         this.setState({
           articles: fetchedArticles.map((article) => {
             article.voted = 0;
             return article;
           }),
-          newArticle: false
+          newArticle: false,
+          p: 1,
+          isAtEndOfArticles: false
         });
       })
       .catch((err) => {
-        if (err.response.status === 404) this.setState({ newArticle: true });
-        else
-          navigate("/ErrorPage", { state: { errMsg: err.response.data.msg } });
+        //   if (err.response.status === 404) this.setState({ newArticle: true });
+        //   else
+        //     navigate("/ErrorPage", { state: { errMsg: err.response.data.msg } });
       });
   };
   deleteArticle = (article_id) => {
@@ -132,29 +145,44 @@ class Content extends Component {
   updateStateWithP = () => {
     this.setState((prevState) => {
       prevState.p++;
-    }, this.loadMoreArticles);
+    }, this.loadMoreArticles(this.props.topic, this.state.query));
   };
   loadMoreArticles = (topic, query) => {
     api
-      .getArticles(topic, query, this.state.p)
+      .getArticles(topic, query, this.state.p + 1)
       .then((fetchedArticles) => {
-        this.setState((prevState) => ({
-          articles: [
-            ...prevState.articles,
-            ...fetchedArticles.map((article) => {
-              article.voted = 0;
-              return article;
-            })
-          ],
-          newArticle: false,
-          isAtEndOfArticles: fetchedArticles.length >= 10 ? false : true
-        }));
+        const newArticles = fetchedArticles.reduce((acc, article) => {
+          if (!this.state.articles.includes(article.article_id)) {
+            article.voted = 0;
+            acc.push(article);
+          }
+          return acc;
+        }, []);
+        const accumulatedArticles = this.state.articles.concat(newArticles);
+        this.setState(
+          {
+            articles: accumulatedArticles,
+            newArticle: false,
+            isAtEndOfArticles: fetchedArticles.length >= 10 ? false : true
+          },
+          () => console.log(this.state)
+        );
       })
       .catch((err) => {
         if (err.response.status === 404) this.setState({ newArticle: true });
         else
           navigate("/ErrorPage", { state: { errMsg: err.response.data.msg } });
       });
+  };
+  handleChange = (event) => {
+    const { value, id } = event.target;
+    this.setState({ [id]: value }, console.log(this.state));
+  };
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const { query } = this.state;
+    const { topic } = this.props;
+    this.fetchArticles(topic, util.buildQuery(query), 1);
   };
 }
 

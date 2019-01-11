@@ -23,10 +23,11 @@ const NavBar = ({ topics, user, handleLogout, setUser }) => {
           ))}
         </MenuList>
       </Menu>
-
-      <AuthUser user={user} handleLogout={handleLogout}>
-        <Login setUser={setUser} />
-      </AuthUser>
+      <div className="loginArea">
+        <AuthUser user={user} handleLogout={handleLogout}>
+          <Login className="loginForm" setUser={setUser} />
+        </AuthUser>
+      </div>
     </div>
   );
 };

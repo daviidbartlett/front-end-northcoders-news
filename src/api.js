@@ -6,9 +6,20 @@ export const getArticles = async (topic, query, p) => {
   const URL = topic
     ? `${BASE_URL}topics/${topic}/articles`
     : `${BASE_URL}articles`;
-  const urlQuery = query ? `${query}&p=${p}` : `?p=${p}`;
-  const { data } = await axios.get(URL + urlQuery);
-  console.log(URL + urlQuery);
+  const page = p ? `p=${p}` : "";
+  let queryArray = query || p ? [query, page] : [];
+  const queryStr =
+    queryArray.length === 0
+      ? ""
+      : queryArray.reduce((acc, query) => {
+          if (query) {
+            return (acc += `${query}&`);
+          }
+          return acc;
+        }, "");
+
+  console.log(URL + "?" + queryStr);
+  const { data } = await axios.get(URL + "?" + queryStr);
   return data.articles;
 };
 export const getTopics = async () => {
