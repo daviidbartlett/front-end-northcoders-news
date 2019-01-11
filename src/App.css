@@ -60,13 +60,25 @@ button {
   color: white;
   border-radius: 3px 3px 3px 3px;
   font-size: 11pt;
+  margin: 2px 2px 4px 2px;
   border: none;
+}
+button:hover {
+  background: rgb(77, 146, 213);
+  text-decoration: none;
 }
 .queryBar {
   background-color: white;
   height: 3%;
   padding: 3px;
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.queryItem {
+  margin-left: 1em;
+  margin-right: 1em;
+  height: 80%;
 }
 .falseIncorrectUsername {
   grid-area: "feedback";

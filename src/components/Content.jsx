@@ -6,6 +6,7 @@ import ArticleSideBar from "./ArticleSideBar";
 import TopicSideBar from "./TopicSideBar";
 import FirstArticle from "./FirstArticle";
 import LoadMore from "./LoadMore";
+import Loading from "./Loading";
 import * as util from "../utils";
 
 class Content extends Component {
@@ -15,12 +16,13 @@ class Content extends Component {
     query: "",
     limit: "",
     p: 1,
-    isAtEndOfArticles: false
+    isAtEndOfArticles: false,
+    isLoading: true
   };
   render() {
     const { user, addTopic, topic } = this.props;
-    const { query, limit } = this.state;
-    if (this.state.newArticle || this.state.articles.length === 0)
+    const { query, newArticle, articles, isLoading } = this.state;
+    if (newArticle || articles.length === 0)
       return (
         <FirstArticle
           path="/:topic/firstarticle"
@@ -29,17 +31,22 @@ class Content extends Component {
           updateStateWithNewArticle={this.updateStateWithNewArticle}
         />
       );
-
+    if (isLoading) return <Loading />;
     return (
       <div className="main">
         <div className="content">
           <form className="queryBar" onSubmit={this.handleSubmit}>
-            <select value={query} id="query" onChange={this.handleChange}>
+            <select
+              className="queryItem"
+              value={query}
+              id="query"
+              onChange={this.handleChange}
+            >
               <option value="">date new to old</option>
               <option value="sort_ascending=true">date old to new</option>
               <option value="sort_by=votes">most popular</option>
             </select>
-            <button>sort</button>
+            <button className="queryItem">sort</button>
           </form>
           {this.state.articles.map((article) => (
             <div key={article.article_id}>
@@ -58,11 +65,11 @@ class Content extends Component {
         </div>
         <div className="sideBar">
           <div className="queryBar" />
-          {this.props.topic ? (
+          {topic ? (
             <ArticleSideBar
               path="/:topic"
               user={user}
-              topic={this.props.topic}
+              topic={topic}
               updateStateWithNewArticle={this.updateStateWithNewArticle}
             />
           ) : (
@@ -76,8 +83,8 @@ class Content extends Component {
     this.fetchArticles(this.props.topic);
   };
   componentDidUpdate = (prevProps) => {
-    if (prevProps.topic !== this.props.topic)
-      this.fetchArticles(this.props.topic);
+    const { topic } = this.props;
+    if (prevProps.topic !== topic) this.fetchArticles(topic);
   };
 
   fetchArticles = (topic, query) => {
@@ -92,13 +99,14 @@ class Content extends Component {
           }),
           newArticle: false,
           p: 1,
-          isAtEndOfArticles: false
+          isAtEndOfArticles: false,
+          isLoading: false
         });
       })
       .catch((err) => {
-        //   if (err.response.status === 404) this.setState({ newArticle: true });
-        //   else
-        //     navigate("/ErrorPage", { state: { errMsg: err.response.data.msg } });
+        if (err.response.status === 404) this.setState({ newArticle: true });
+        else
+          navigate("/ErrorPage", { state: { errMsg: err.response.data.msg } });
       });
   };
   deleteArticle = (article_id) => {
