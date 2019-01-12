@@ -32,7 +32,7 @@ class ArticleSideBar extends Component {
           )}
 
           <form onSubmit={this.handleSubmit}>
-            <label htmlFor="title">title: </label>
+            <h5>Title:</h5>
             <input
               required
               type="text"
@@ -41,8 +41,9 @@ class ArticleSideBar extends Component {
               value={this.state.title}
             />
 
-            <label htmlFor="body">Body:</label>
-            <input
+            <h5> Body:</h5>
+            <textarea
+              className="longInput"
               required
               type="text"
               id="body"
@@ -50,7 +51,9 @@ class ArticleSideBar extends Component {
               value={this.state.body}
             />
 
-            <button type="submit">Post new article</button>
+            <button className="button" id="sideButton" type="submit">
+              Post new article
+            </button>
           </form>
         </div>
       </>

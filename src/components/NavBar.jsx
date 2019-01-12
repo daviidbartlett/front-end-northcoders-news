@@ -8,11 +8,11 @@ import AuthUser from "./AuthUser";
 const NavBar = ({ topics, user, handleLogout, setUser }) => {
   return (
     <div className="navBar">
-      <Link className="homeLink" to="/">
+      <Link className="button" to="/">
         Home
       </Link>
       <Menu>
-        <MenuButton>
+        <MenuButton className="button">
           Topics <span aria-hidden>▾</span>
         </MenuButton>
         <MenuList>

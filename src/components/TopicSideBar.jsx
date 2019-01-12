@@ -22,29 +22,29 @@ class TopicSideBar extends Component {
 
         <div className="sideBarForm">
           <h4>Want to start a new conversation? Why not add a new topic?</h4>
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="slug">
-              topic:
-              <input
-                required
-                type="text"
-                id="slug"
-                onChange={this.handleChange}
-                value={this.state.slug}
-              />
-            </label>
-            <label htmlFor="description">
-              description:
-              <input
-                required
-                type="text"
-                id="description"
-                onChange={this.handleChange}
-                value={this.state.description}
-              />
-            </label>
+          <form className="sideForm" onSubmit={this.handleSubmit}>
+            <h5>Topic:</h5>
+            <input
+              className="sideFormComponent"
+              required
+              type="text"
+              id="slug"
+              onChange={this.handleChange}
+              value={this.state.slug}
+            />
 
-            <button type="submit">Post new topic</button>
+            <h5>Description:</h5>
+            <textarea
+              required
+              type="text"
+              id="description"
+              onChange={this.handleChange}
+              value={this.state.description}
+            />
+
+            <button className="button" id="sideButton" type="submit">
+              Post new topic
+            </button>
           </form>
         </div>
       </>

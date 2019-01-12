@@ -21,6 +21,22 @@ a {
 a:hover {
   text-decoration: underline;
 }
+.sideForm {
+  display: flex;
+  flex-flow: column;
+  align-content: center;
+  justify-content: center;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+#sideButton {
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+textarea {
+  resize: none;
+}
 
 .header {
   grid-area: header;
@@ -55,17 +71,21 @@ a:hover {
 .loginForm {
   grid-area: "login";
 }
-button {
+.button {
   background: rgb(49, 121, 204);
   color: white;
   border-radius: 3px 3px 3px 3px;
   font-size: 11pt;
-  margin: 2px 2px 4px 2px;
+  margin: 4px 4px 4px 4px;
   border: none;
 }
-button:hover {
+.button:hover {
   background: rgb(77, 146, 213);
   text-decoration: none;
+}
+.longInput {
+  width: 75%;
+  height: 100px;
 }
 .queryBar {
   background-color: white;
@@ -164,6 +184,7 @@ button:hover {
 }
 .unsubmittedVote:hover {
   filter: none;
+  background: none;
 }
 
 .submittedVote {
@@ -180,6 +201,7 @@ button:hover {
   outline: none;
   padding: 0;
 }
+
 .footer {
   grid-area: footer;
   margin: 0;

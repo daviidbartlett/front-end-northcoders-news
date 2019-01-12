@@ -22,9 +22,9 @@ class CommentSideBar extends Component {
 
         <div className="sideBarForm">
           <h4>Add a comment</h4>
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="comment">comment:</label>
-            <input
+          <form className="sideForm" onSubmit={this.handleSubmit}>
+            <h5>Comment:</h5>
+            <textarea
               required
               type="text"
               id="comment"
@@ -32,7 +32,9 @@ class CommentSideBar extends Component {
               value={this.state.comment}
             />
 
-            <button type="submit">Post new comment</button>
+            <button className="button" id="sideButton" type="submit">
+              Post new comment
+            </button>
           </form>
         </div>
       </>

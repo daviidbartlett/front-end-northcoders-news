@@ -2,7 +2,11 @@ import React, { Component } from "react";
 
 class Delete extends Component {
   render() {
-    return <button onClick={this.handleClick}>x</button>;
+    return (
+      <button className="button" onClick={this.handleClick}>
+        x
+      </button>
+    );
   }
 
   handleClick = () => {
