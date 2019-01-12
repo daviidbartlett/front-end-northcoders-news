@@ -132,6 +132,14 @@ textarea {
   border: solid 1px rgb(179, 179, 179);
   text-align: justify;
 }
+.newArticleMessage {
+  display: flex;
+  margin-left: 25%;
+  margin-right: 25%;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
 .articleCard:hover {
   border: solid 1px rgb(137, 137, 137);
 }

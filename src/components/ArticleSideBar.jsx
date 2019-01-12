@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PleaseLogin from "./PleaseLogin";
 import * as api from "../api";
-import { navigate } from "@reach/router/lib/history";
 
 class ArticleSideBar extends Component {
   state = {

@@ -22,7 +22,7 @@ class Content extends Component {
   render() {
     const { user, addTopic, topic } = this.props;
     const { query, newArticle, articles, isLoading } = this.state;
-    if (newArticle || articles.length === 0)
+    if (newArticle)
       return (
         <FirstArticle
           path="/:topic/firstarticle"
@@ -31,40 +31,48 @@ class Content extends Component {
           updateStateWithNewArticle={this.updateStateWithNewArticle}
         />
       );
-    if (isLoading) return <Loading />;
+
     return (
       <div className="main">
-        <div className="content">
-          <form className="queryBar" onSubmit={this.handleSubmit}>
-            <select
-              className="queryItem"
-              value={query}
-              id="query"
-              onChange={this.handleChange}
-            >
-              <option value="">date new to old</option>
-              <option value="sort_ascending=true">date old to new</option>
-              <option value="sort_by=votes">most popular</option>
-            </select>
-            <button className="queryItem">sort</button>
-          </form>
-          {this.state.articles.map((article) => (
-            <div key={article.article_id}>
-              <ArticleCard
-                article={article}
-                deleteArticle={this.deleteArticle}
-                user={user}
-                addVote={this.addVote}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <div className="content">
+            <form className="queryBar" onSubmit={this.handleSubmit}>
+              <select
+                className="queryItem"
+                value={query}
+                id="query"
+                onChange={this.handleChange}
+              >
+                <option value="">date new to old</option>
+                <option value="sort_ascending=true">date old to new</option>
+                <option value="sort_by=votes">most popular</option>
+              </select>
+              <button className="queryItem">sort</button>
+            </form>
+            {this.state.articles.map((article) => (
+              <div key={article.article_id}>
+                <ArticleCard
+                  article={article}
+                  deleteArticle={this.deleteArticle}
+                  user={user}
+                  addVote={this.addVote}
+                />
+              </div>
+            ))}
+            {(!this.state.isAtEndOfArticles ||
+              this.state.articles.length % 10 === 0) && (
+              <LoadMore
+                updateStateWithP={this.updateStateWithP}
+                topic={topic}
               />
-            </div>
-          ))}
-          {(!this.state.isAtEndOfArticles ||
-            this.state.articles.length % 10 === 0) && (
-            <LoadMore updateStateWithP={this.updateStateWithP} topic={topic} />
-          )}
-        </div>
+            )}
+          </div>
+        )}
         <div className="sideBar">
           <div className="queryBar" />
+
           {topic ? (
             <ArticleSideBar
               path="/:topic"
@@ -81,10 +89,12 @@ class Content extends Component {
   }
   componentDidMount = () => {
     this.fetchArticles(this.props.topic);
+    window.scrollTo(0, 0);
   };
   componentDidUpdate = (prevProps) => {
     const { topic } = this.props;
     if (prevProps.topic !== topic) this.fetchArticles(topic);
+    window.scrollTo(0, 0);
   };
 
   fetchArticles = (topic, query) => {

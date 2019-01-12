@@ -5,7 +5,12 @@ const FirstArticle = ({ user, topic, updateStateWithNewArticle }) => {
   return (
     <div className="main">
       <div className="content">
-        <p>Post your first article</p>
+        <div className="articleCard">
+          <div className="newArticleMessage">
+            <p>Hello there! It feels pretty empty here.</p>
+            <p>Why not post an article and start a discussion?</p>
+          </div>
+        </div>
       </div>
 
       <div className="sideBar">

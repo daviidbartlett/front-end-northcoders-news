@@ -4,12 +4,14 @@ import { navigate, Link } from "@reach/router";
 import CommentCard from "./CommentCard";
 import CommentSideBar from "./CommentSideBar";
 import VoteArticle from "./VoteArticle";
+import Loading from "./Loading";
 import moment from "moment";
 
 class Article extends Component {
   state = {
     article: {},
-    comments: []
+    comments: [],
+    isLoading: true
   };
   render() {
     const type = "single";
@@ -23,50 +25,54 @@ class Article extends Component {
       topic,
       created_at
     } = this.state.article;
-
     return (
       <div className="main">
-        <div className="content">
-          <div className="articleCard">
-            <VoteArticle
-              votes={votes}
-              voted={voted}
-              type={type}
-              article_id={article_id}
-              addVote={this.addVote}
-              user={this.props.user}
-            />
-            <span className="articleInfo">
-              <div className="titleAuthorLine">
-                <p>
-                  <Link to={`/${topic}`}>{topic}</Link> . Posted by {author}{" "}
-                  {moment(created_at, "YYYYMMDD").fromNow()}
-                </p>
-              </div>
-              <div className="articleBody">
-                <h4>{title}</h4> <p>{body}</p>
-              </div>
-            </span>
-          </div>
-          {/* <QueryBar
+        {this.state.isLoading ? (
+          <Loading />
+        ) : (
+          <div className="content">
+            <div className="articleCard">
+              <VoteArticle
+                votes={votes}
+                voted={voted}
+                type={type}
+                article_id={article_id}
+                addVote={this.addVote}
+                user={this.props.user}
+              />
+              <span className="articleInfo">
+                <div className="titleAuthorLine">
+                  <p>
+                    <Link to={`/${topic}`}>{topic}</Link> . Posted by {author}{" "}
+                    {moment(created_at, "YYYYMMDD").fromNow()}
+                  </p>
+                </div>
+                <div className="articleBody">
+                  <h4>{title}</h4> <p>{body}</p>
+                </div>
+              </span>
+            </div>
+            {/* <QueryBar
           fetchCommentsForArticle={this.props.fetchCommentsForArticle}
           fetchArticles={this.props.fetchArticles}
           article_id={article_id}
         /> */}
 
-          {this.state.comments.length !== 0 &&
-            this.state.comments.map((comment) => (
-              <div key={comment.comment_id}>
-                <CommentCard
-                  comment={comment}
-                  addVote={this.addVote}
-                  user={user}
-                  article_id={article_id}
-                  deleteComment={this.deleteComment}
-                />
-              </div>
-            ))}
-        </div>
+            {this.state.comments.length !== 0 &&
+              this.state.comments.map((comment) => (
+                <div key={comment.comment_id}>
+                  <CommentCard
+                    comment={comment}
+                    addVote={this.addVote}
+                    user={user}
+                    article_id={article_id}
+                    deleteComment={this.deleteComment}
+                  />
+                </div>
+              ))}
+          </div>
+        )}
+
         <div className="sideBar">
           <CommentSideBar
             className="sideBar"
@@ -80,21 +86,17 @@ class Article extends Component {
   }
   componentDidMount = () => {
     const { article_id } = this.props;
+    window.scrollTo(0, 0);
     this.fetchArticle(article_id);
     this.fetchCommentsForArticle(article_id);
   };
   fetchArticle = (article_id) => {
-    api
-      .getArticle(article_id)
-      .then((article) => {
-        this.setState({
-          article: { ...article, voted: 0 }
-        });
-      })
-      .catch(
-        console.log
-        // navigate("/error", { state: { errMsg: err.response.data.msg } })
-      );
+    api.getArticle(article_id).then((article) => {
+      this.setState({
+        article: { ...article, voted: 0 },
+        isLoading: false
+      });
+    });
   };
   fetchCommentsForArticle = (article_id, query) => {
     api

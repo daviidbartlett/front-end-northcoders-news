@@ -15,8 +15,10 @@ class App extends Component {
     topics: [],
     user: null
   };
+
   render() {
     const { user, topics } = this.state;
+
     return (
       <div className="App">
         <Header />
