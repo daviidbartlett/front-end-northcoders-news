@@ -61,8 +61,7 @@ class Content extends Component {
                 />
               </div>
             ))}
-            {(!this.state.isAtEndOfArticles ||
-              this.state.articles.length % 10 === 0) && (
+            {!this.state.isAtEndOfArticles && (
               <LoadMore
                 updateStateWithP={this.updateStateWithP}
                 topic={topic}
@@ -187,7 +186,10 @@ class Content extends Component {
         );
       })
       .catch((err) => {
-        if (err.response.status === 404) this.setState({ newArticle: true });
+        if (err.response.status === 404)
+          this.setState({ isAtEndOfArticles: true }, () =>
+            console.log(this.state)
+          );
         else
           navigate("/ErrorPage", { state: { errMsg: err.response.data.msg } });
       });
