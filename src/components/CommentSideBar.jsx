@@ -7,8 +7,8 @@ class CommentSideBar extends Component {
     comment: ""
   };
   render() {
-    const { user, unauthorisedRequest } = this.props;
-    if (!user) return <PleaseLogin unauthorisedRequest={unauthorisedRequest} />;
+    const { user } = this.props;
+    if (!user) return <PleaseLogin />;
     return (
       <>
         <div className="sideBarForm">
@@ -45,7 +45,6 @@ class CommentSideBar extends Component {
     this.setState({ [id]: value });
   };
   handleSubmit = (event) => {
-    console.log(this.props);
     event.preventDefault();
     if (this.props.user) {
       this.addComment(this.state.title, this.state.body);

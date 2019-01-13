@@ -4,13 +4,7 @@ import Delete from "./DeleteButton";
 import VoteArticle from "./VoteArticle";
 import moment from "moment";
 
-const ArticleCard = ({
-  article,
-  deleteArticle,
-  user,
-  addVote,
-  renderLoginWarning
-}) => {
+const ArticleCard = ({ article, deleteArticle, user, addVote }) => {
   const type = "map";
   const {
     title,
@@ -32,7 +26,6 @@ const ArticleCard = ({
         user={user}
         addVote={addVote}
         type={type}
-        renderLoginWarning={renderLoginWarning}
       />
 
       <span className="articleInfo">

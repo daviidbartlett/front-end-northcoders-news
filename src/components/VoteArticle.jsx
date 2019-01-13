@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Northcoders_Logo from "../images/Northcoders_Logo.png";
 import Northcoders_Logo_reverse from "../images/Northcoders_Logo_reverse.png";
+import { withAlert } from "react-alert";
 class VoteArticle extends Component {
   render() {
     const { votes, voted } = this.props;
@@ -66,9 +67,9 @@ class VoteArticle extends Component {
         );
       }
     } else {
-      this.props.renderLoginWarning();
+      this.props.alert.show("You need to login to vote");
     }
   };
 }
 
-export default VoteArticle;
+export default withAlert(VoteArticle);

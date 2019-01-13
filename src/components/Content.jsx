@@ -20,13 +20,7 @@ class Content extends Component {
     isLoading: true
   };
   render() {
-    const {
-      user,
-      addTopic,
-      topic,
-      renderLoginWarning,
-      unauthorisedRequest
-    } = this.props;
+    const { user, addTopic, topic } = this.props;
     const { query, newArticle, isLoading } = this.state;
     if (newArticle)
       return (
@@ -65,7 +59,6 @@ class Content extends Component {
                   deleteArticle={this.deleteArticle}
                   user={user}
                   addVote={this.addVote}
-                  renderLoginWarning={renderLoginWarning}
                 />
               </div>
             ))}
@@ -86,15 +79,9 @@ class Content extends Component {
               user={user}
               topic={topic}
               updateStateWithNewArticle={this.updateStateWithNewArticle}
-              unauthorisedRequest={unauthorisedRequest}
             />
           ) : (
-            <TopicSideBar
-              path="/"
-              user={user}
-              addTopic={addTopic}
-              unauthorisedRequest={unauthorisedRequest}
-            />
+            <TopicSideBar path="/" user={user} addTopic={addTopic} />
           )}
         </div>
       </div>
@@ -190,27 +177,22 @@ class Content extends Component {
           return acc;
         }, []);
         const accumulatedArticles = this.state.articles.concat(newArticles);
-        this.setState(
-          {
-            articles: accumulatedArticles,
-            newArticle: false,
-            isAtEndOfArticles: fetchedArticles.length >= 10 ? false : true
-          },
-          () => console.log(this.state)
-        );
+        this.setState({
+          articles: accumulatedArticles,
+          newArticle: false,
+          isAtEndOfArticles: fetchedArticles.length >= 10 ? false : true
+        });
       })
       .catch((err) => {
         if (err.response.status === 404)
-          this.setState({ isAtEndOfArticles: true }, () =>
-            console.log(this.state)
-          );
+          this.setState({ isAtEndOfArticles: true });
         else
           navigate("/ErrorPage", { state: { errMsg: err.response.data.msg } });
       });
   };
   handleChange = (event) => {
     const { value, id } = event.target;
-    this.setState({ [id]: value }, console.log(this.state));
+    this.setState({ [id]: value });
   };
   handleSubmit = (event) => {
     event.preventDefault();

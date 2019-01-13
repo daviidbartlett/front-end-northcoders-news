@@ -18,7 +18,6 @@ export const getArticles = async (topic, query, p) => {
           return acc;
         }, "");
 
-  console.log(URL + "?" + queryStr);
   const { data } = await axios.get(URL + "?" + queryStr);
   return data.articles;
 };

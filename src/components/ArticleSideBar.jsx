@@ -9,8 +9,8 @@ class ArticleSideBar extends Component {
   };
 
   render() {
-    const { user, unauthorisedRequest } = this.props;
-    if (!user) return <PleaseLogin unauthorisedRequest={unauthorisedRequest} />;
+    const { user } = this.props;
+    if (!user) return <PleaseLogin />;
     const {
       firstArticle,
       topic,

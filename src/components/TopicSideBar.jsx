@@ -7,8 +7,8 @@ class TopicSideBar extends Component {
     description: ""
   };
   render() {
-    const { user, unauthorisedRequest } = this.props;
-    if (!user) return <PleaseLogin unauthorisedRequest={unauthorisedRequest} />;
+    const { user } = this.props;
+    if (!user) return <PleaseLogin />;
     return (
       <>
         <div className="sideBarForm">
@@ -56,7 +56,6 @@ class TopicSideBar extends Component {
   };
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.props);
     if (this.props.user) {
       this.props.addTopic(this.state.slug, this.state.description);
       this.setState({

@@ -9,52 +9,39 @@ import ErrorPage from "./components/ErrorPage";
 import { Router, navigate } from "@reach/router";
 import * as api from "./api";
 import Article from "./components/Article";
+import { Provider as AlertProvider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
 
 class App extends Component {
   state = {
     topics: [],
-    user: null,
-    unauthorisedRequest: false
+    user: null
   };
 
   render() {
-    const { user, topics, unauthorisedRequest } = this.state;
+    const { user, topics } = this.state;
 
     return (
-      <div className="App">
-        <Header />
-        <NavBar
-          topics={topics}
-          user={user}
-          setUser={this.setUser}
-          handleLogout={this.handleLogout}
-        />
-        <Router id="content">
-          <Content
-            path="/"
+      <AlertProvider template={AlertTemplate}>
+        <div className="App">
+          <Header />
+          <NavBar
+            topics={topics}
             user={user}
-            addTopic={this.addTopic}
-            renderLoginWarning={this.renderLoginWarning}
-            unauthorisedRequest={unauthorisedRequest}
+            setUser={this.setUser}
+            handleLogout={this.handleLogout}
           />
-          <Content
-            path="/:topic"
-            user={user}
-            renderLoginWarning={this.renderLoginWarning}
-            unauthorisedRequest={unauthorisedRequest}
-          />
-          <Article
-            path="/:topic/:article_id"
-            user={user}
-            renderLoginWarning={this.renderLoginWarning}
-            unauthorisedRequest={unauthorisedRequest}
-          />
+          <Router id="content">
+            <Content path="/" user={user} addTopic={this.addTopic} />
+            <Content path="/:topic" user={user} />
+            <Article path="/:topic/:article_id" user={user} />
 
-          <ErrorPage path="/error" />
-        </Router>
+            <ErrorPage path="/error" />
+          </Router>
 
-        <Footer />
-      </div>
+          <Footer />
+        </div>
+      </AlertProvider>
     );
   }
   componentDidMount = () => {
@@ -86,11 +73,6 @@ class App extends Component {
           topics: [...prevState.topics, topic]
         }));
       });
-  };
-  renderLoginWarning = () => {
-    this.setState((prevState) => ({
-      unauthorisedRequest: !prevState.unauthorisedRequest
-    }));
   };
 }
 export default App;
