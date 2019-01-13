@@ -3,7 +3,14 @@ import Delete from "./DeleteButton";
 import VoteArticle from "./VoteArticle";
 import moment from "moment";
 
-const CommentCard = ({ comment, user, deleteComment, article_id, addVote }) => {
+const CommentCard = ({
+  comment,
+  user,
+  deleteComment,
+  article_id,
+  addVote,
+  renderLoginWarning
+}) => {
   const { body, author, created_at, comment_id, votes, voted } = comment;
 
   return (
@@ -15,6 +22,7 @@ const CommentCard = ({ comment, user, deleteComment, article_id, addVote }) => {
         addVote={addVote}
         comment_id={comment_id}
         user={user}
+        renderLoginWarning={renderLoginWarning}
       />
       <div className="articleInfo">
         <div className="titleAuthorLine">

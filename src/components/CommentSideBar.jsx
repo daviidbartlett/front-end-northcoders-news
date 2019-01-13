@@ -7,8 +7,8 @@ class CommentSideBar extends Component {
     comment: ""
   };
   render() {
-    const { user } = this.props;
-    if (!user) return <PleaseLogin />;
+    const { user, unauthorisedRequest } = this.props;
+    if (!user) return <PleaseLogin unauthorisedRequest={unauthorisedRequest} />;
     return (
       <>
         <div className="sideBarForm">

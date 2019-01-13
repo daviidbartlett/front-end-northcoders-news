@@ -15,7 +15,12 @@ class Article extends Component {
   };
   render() {
     const type = "single";
-    const { user, article_id } = this.props;
+    const {
+      user,
+      article_id,
+      renderLoginWarning,
+      unauthorisedRequest
+    } = this.props;
     const {
       body,
       title,
@@ -39,6 +44,7 @@ class Article extends Component {
                 article_id={article_id}
                 addVote={this.addVote}
                 user={this.props.user}
+                renderLoginWarning={renderLoginWarning}
               />
               <span className="articleInfo">
                 <div className="titleAuthorLine">
@@ -67,6 +73,7 @@ class Article extends Component {
                     user={user}
                     article_id={article_id}
                     deleteComment={this.deleteComment}
+                    renderLoginWarning={renderLoginWarning}
                   />
                 </div>
               ))}
@@ -79,6 +86,7 @@ class Article extends Component {
             user={user}
             article_id={article_id}
             updateStateWithNewComment={this.updateStateWithNewComment}
+            unauthorisedRequest={unauthorisedRequest}
           />
         </div>
       </div>

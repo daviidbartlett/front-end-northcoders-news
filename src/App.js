@@ -13,11 +13,12 @@ import Article from "./components/Article";
 class App extends Component {
   state = {
     topics: [],
-    user: null
+    user: null,
+    unauthorisedRequest: false
   };
 
   render() {
-    const { user, topics } = this.state;
+    const { user, topics, unauthorisedRequest } = this.state;
 
     return (
       <div className="App">
@@ -29,9 +30,25 @@ class App extends Component {
           handleLogout={this.handleLogout}
         />
         <Router id="content">
-          <Content path="/" user={user} addTopic={this.addTopic} />
-          <Content path="/:topic" user={user} />
-          <Article path="/:topic/:article_id" user={user} />
+          <Content
+            path="/"
+            user={user}
+            addTopic={this.addTopic}
+            renderLoginWarning={this.renderLoginWarning}
+            unauthorisedRequest={unauthorisedRequest}
+          />
+          <Content
+            path="/:topic"
+            user={user}
+            renderLoginWarning={this.renderLoginWarning}
+            unauthorisedRequest={unauthorisedRequest}
+          />
+          <Article
+            path="/:topic/:article_id"
+            user={user}
+            renderLoginWarning={this.renderLoginWarning}
+            unauthorisedRequest={unauthorisedRequest}
+          />
 
           <ErrorPage path="/error" />
         </Router>
@@ -69,6 +86,11 @@ class App extends Component {
           topics: [...prevState.topics, topic]
         }));
       });
+  };
+  renderLoginWarning = () => {
+    this.setState((prevState) => ({
+      unauthorisedRequest: !prevState.unauthorisedRequest
+    }));
   };
 }
 export default App;

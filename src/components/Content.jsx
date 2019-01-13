@@ -20,8 +20,14 @@ class Content extends Component {
     isLoading: true
   };
   render() {
-    const { user, addTopic, topic } = this.props;
-    const { query, newArticle, articles, isLoading } = this.state;
+    const {
+      user,
+      addTopic,
+      topic,
+      renderLoginWarning,
+      unauthorisedRequest
+    } = this.props;
+    const { query, newArticle, isLoading } = this.state;
     if (newArticle)
       return (
         <FirstArticle
@@ -39,6 +45,7 @@ class Content extends Component {
         ) : (
           <div className="content">
             <form className="queryBar" onSubmit={this.handleSubmit}>
+              <p className="topic">{topic}</p>
               <select
                 className="queryItem"
                 value={query}
@@ -58,6 +65,7 @@ class Content extends Component {
                   deleteArticle={this.deleteArticle}
                   user={user}
                   addVote={this.addVote}
+                  renderLoginWarning={renderLoginWarning}
                 />
               </div>
             ))}
@@ -78,9 +86,15 @@ class Content extends Component {
               user={user}
               topic={topic}
               updateStateWithNewArticle={this.updateStateWithNewArticle}
+              unauthorisedRequest={unauthorisedRequest}
             />
           ) : (
-            <TopicSideBar path="/" user={user} addTopic={addTopic} />
+            <TopicSideBar
+              path="/"
+              user={user}
+              addTopic={addTopic}
+              unauthorisedRequest={unauthorisedRequest}
+            />
           )}
         </div>
       </div>

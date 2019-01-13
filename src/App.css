@@ -100,6 +100,9 @@ textarea {
   margin-right: 1em;
   height: 80%;
 }
+.topic {
+  margin-left: 10px;
+}
 .falseIncorrectUsername {
   grid-area: "feedback";
   margin: 0;
@@ -111,6 +114,10 @@ textarea {
   -webkit-animation: bounce-right 0.8s both;
   animation: bounce-right 0.8s both;
   font-size: 75%;
+}
+.reminder {
+  -webkit-animation: bounce-right 0.8s both;
+  animation: bounce-right 0.8s both;
 }
 .main {
   grid-area: main;

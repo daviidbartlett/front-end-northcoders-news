@@ -66,7 +66,7 @@ class VoteArticle extends Component {
         );
       }
     } else {
-      alert("You need to login to use this feature!");
+      this.props.renderLoginWarning();
     }
   };
 }
