@@ -11,7 +11,7 @@ class CommentSideBar extends Component {
     if (!user) return <PleaseLogin />;
     return (
       <>
-        <div className="sideBarForm">
+        <div className="sideBarForm slideInForm">
           <h2>Welcome back {user.username}</h2>
           <img
             className="avatar"
@@ -20,7 +20,7 @@ class CommentSideBar extends Component {
           />
         </div>
 
-        <div className="sideBarForm">
+        <div className="sideBarForm slideInForm">
           <h4>Add a comment</h4>
           <form className="sideForm" onSubmit={this.handleSubmit}>
             <h5>Comment:</h5>

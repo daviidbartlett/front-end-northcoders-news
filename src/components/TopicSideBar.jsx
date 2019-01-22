@@ -11,7 +11,7 @@ class TopicSideBar extends Component {
     if (!user) return <PleaseLogin />;
     return (
       <>
-        <div className="sideBarForm">
+        <div className="sideBarForm slideInForm">
           <h2>Welcome back {this.props.user.username}</h2>
           <img
             className="avatar"
@@ -20,7 +20,7 @@ class TopicSideBar extends Component {
           />
         </div>
 
-        <div className="sideBarForm">
+        <div className="sideBarForm slideInForm">
           <h4>Want to start a new conversation? Why not add a new topic?</h4>
           <form className="sideForm" onSubmit={this.handleSubmit}>
             <h5>Topic:</h5>
