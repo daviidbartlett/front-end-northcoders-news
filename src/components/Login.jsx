@@ -7,6 +7,7 @@ class Login extends Component {
     incorrectUsername: false
   };
   render() {
+    const { username, incorrectUsername } = this.state;
     return (
       <>
         <form onSubmit={this.handleSubmit}>
@@ -14,14 +15,14 @@ class Login extends Component {
           <input
             id="username"
             placeholder="username"
-            value={this.state.username}
+            value={username}
             onChange={this.handleChange}
           />
         </form>
 
         <p
           className={
-            this.state.incorrectUsername
+            incorrectUsername
               ? "trueIncorrectUsername"
               : "falseIncorrectUsername"
           }
