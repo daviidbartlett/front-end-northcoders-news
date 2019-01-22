@@ -198,7 +198,8 @@ class Content extends Component {
     event.preventDefault();
     const { query } = this.state;
     const { topic } = this.props;
-    this.fetchArticles(topic, util.buildQuery(query), 1);
+    console.log(util.buildQuery(query));
+    this.fetchArticles(topic, util.buildQuery(query));
   };
 }
 
