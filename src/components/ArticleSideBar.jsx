@@ -19,12 +19,12 @@ class ArticleSideBar extends Component {
 
     return (
       <>
-        <div className="sideBarForm">
+        <div className="sideBarForm slideInForm">
           <h2>Welcome back {username}</h2>
           <img className="avatar" src={avatar_url} alt={username} />
         </div>
 
-        <div className="sideBarForm">
+        <div className="sideBarForm slideInForm">
           {firstArticle ? (
             <h4>Post your first article in {topic}</h4>
           ) : (
