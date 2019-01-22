@@ -4,9 +4,11 @@ import * as api from "../api";
 class Login extends Component {
   state = {
     username: "",
-    incorrectUsername: false
+    incorrectUsername: false,
+    isLoading: false
   };
   render() {
+    const { username, incorrectUsername, isLoading } = this.state;
     return (
       <>
         <form onSubmit={this.handleSubmit}>
@@ -14,19 +16,23 @@ class Login extends Component {
           <input
             id="username"
             placeholder="username"
-            value={this.state.username}
+            value={username}
             onChange={this.handleChange}
           />
         </form>
 
         <p
           className={
-            this.state.incorrectUsername
+            incorrectUsername
               ? "trueIncorrectUsername"
               : "falseIncorrectUsername"
           }
         >
-          Incorrect Username!
+          {isLoading
+            ? `Logging in`
+            : incorrectUsername
+            ? `Incorrect Username`
+            : ""}
         </p>
       </>
     );
@@ -36,16 +42,17 @@ class Login extends Component {
     this.setState({ username: value });
   };
   handleSubmit = (event) => {
+    this.setState({ isLoading: true });
     event.preventDefault();
     api
       .checkUsername(this.state.username)
       .then((user) => {
         this.props.setUser(user);
-        this.setState({ incorrectUsername: false });
+        this.setState({ incorrectUsername: false, isLoading: false });
       })
       .catch((err) => {
         if (err.response.status === 404)
-          this.setState({ incorrectUsername: true });
+          this.setState({ incorrectUsername: true, isLoading: false });
       });
   };
 }
