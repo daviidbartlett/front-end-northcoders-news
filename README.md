@@ -6,7 +6,7 @@ A front end news aggration board which allows the user to browse articles, filte
 
 The application can accessed here: https://nc-news-david.netlify.com
 
-This app was built in react using JSX, CSS, HTML and is built upon a backend express server which acts as an API for a SQL database. The repo for the backend can be found here:
+This app was built in react using JSX, CSS, HTML and is built upon a backend express server which acts as an API for a SQL database. Unit testing has been carried out using Jest for utility functions. The repo for the backend can be found here:
 https://github.com/daviidbartlett/back-end-northcoders-news
 and is hosted by Heroku here:
 https://david-nc-knews.herokuapp.com/api/
